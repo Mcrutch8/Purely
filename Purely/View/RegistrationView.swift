@@ -14,6 +14,7 @@ struct RegistrationView: View {
     @State private var password = ""
     @State private var confirmPassword = ""
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var authObject: AuthenticationViewModel
     
     var body: some View {
         VStack {
@@ -31,21 +32,23 @@ struct RegistrationView: View {
                 InputView(text: $email, title: "Email Address", placeHolder: "name@example.com")
                     .autocapitalization(.none)
                 
-                InputView(text: $password, title: "Full Name", placeHolder: "Full name")
+                InputView(text: $fullName, title: "Full Name", placeHolder: "Full name")
                 
-                InputView(text: $email, title: "Password", placeHolder: "Enter your password", isSecureField: true)
+                InputView(text: $password, title: "Password", placeHolder: "Enter your password", isSecureField: true)
                 
-                InputView(text: $email, title: "Confirm Password", placeHolder: "Confirm password", isSecureField: true)
+                InputView(text: $confirmPassword, title: "Confirm Password", placeHolder: "Confirm password", isSecureField: true)
                 
             }
             .padding(.horizontal)
             .padding(.top, 12)
             
             Button {
-                
+                Task {
+                    try await authObject.createUser(withEmail: email, password: password, fullName: fullName)
+                }
             }   label: {
                 HStack {
-                    Text("SIGN IN")
+                    Text("SIGN UP")
                         .fontWeight(.semibold)
                     Image(systemName: "arrow.right")
                     
@@ -70,7 +73,7 @@ struct RegistrationView: View {
                 }
                 .font(.system(size: 14))
             }
-                
+            
         }
         
     }
