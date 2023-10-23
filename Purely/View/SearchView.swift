@@ -12,7 +12,7 @@ struct SearchView: View {
     var body: some View {
         Group {
             if authObject.userSession != nil {
-                SearchView()
+                ProfileView()
             } else {
                 LoginView()
             }
